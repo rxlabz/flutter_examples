@@ -18,31 +18,32 @@ class _ColorNotifAppState extends State<ColorNotifApp> {
   @override
   Widget build(BuildContext context) {
     return new NotificationListener<ColorNotification>(
-        onNotification: onColorNotif,
-        child: new Center(
-            child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            new Text(
-              selectedColor?.toString() ?? 'Select a color',
-              style: selectedColor == null
-                  ? textStyle
-                  : textStyle.copyWith(color: selectedColor),
-            ),
-            new Center(
-                child: new Row(mainAxisSize: MainAxisSize.min, children: [
-              new ColorBox(Colors.cyan),
-              new ColorBox(Colors.deepOrange),
-              new ColorBox(Colors.purple),
-            ]))
-          ],
-        )));
+        onNotification: onColorNotif, child: getColorBoxes());
   }
 
   bool onColorNotif(ColorNotification notification) {
     setState(() => selectedColor = notification.color);
     return false; // arrête le *bubbling* de la notification
   }
+
+  getColorBoxes() => new Center(
+          child: new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          new Text(
+            selectedColor?.toString() ?? 'Select a color',
+            style: selectedColor == null
+                ? textStyle
+                : textStyle.copyWith(color: selectedColor),
+          ),
+          new Center(
+              child: new Row(mainAxisSize: MainAxisSize.min, children: [
+            new ColorBox(Colors.cyan),
+            new ColorBox(Colors.deepOrange),
+            new ColorBox(Colors.purple),
+          ]))
+        ],
+      ));
 }
 
 class ColorBox extends StatelessWidget {
@@ -65,7 +66,6 @@ class ColorBox extends StatelessWidget {
   }
 }
 
-@immutable
 class ColorNotification extends Notification {
   final Color color;
   ColorNotification(this.color);
